@@ -1,0 +1,33 @@
+server:
+  port: 9000
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: TRACE
+    org.springframework.security.oauth2: TRACE
+#    org.springframework.boot.autoconfigure: DEBUG
+    sun: ERROR
+    javax: ERROR
+    org: INFO
+    com: INFO
+    io: INFO
+    net: INFO
+    springfox: ERROR
+    jdk: ERROR
+    java: ERROR
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientName: ego-google
+            clientId: #Fill this
+            clientSecret: # Fill this
+            authorizationGrantType: authorization_code
+            clientAuthenticationMethod: post
+            scope:
+              - openid
+              - email

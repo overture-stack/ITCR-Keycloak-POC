@@ -1,0 +1,50 @@
+server:
+  port: 7000
+
+logging:
+  level:
+    root: TRACE
+    org.springframework.web: DEBUG
+    org.springframework.security: TRACE
+    org.springframework.security.oauth2: TRACE
+    sun: ERROR
+    javax: ERROR
+    org: INFO
+    com: INFO
+    io: INFO
+    net: INFO
+    springfox: ERROR
+    jdk: ERROR
+    java: ERROR
+
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            clientId: test-ui
+            clientSecret: 2bef746c-0d9c-47d1-be08-443ea9ab6477
+            redirectUri: "http://localhost:7000/code"
+            authorizationGrantType: authorization_code
+            scope:
+              - openid
+          ga4gh:
+            clientId: client
+            clientSecret: secret
+            redirectUri: "http://test-ui:7000/code"
+            authorizationGrantType: authorization_code
+            scope:
+              - openid
+              - ga4gh_passport_v1
+        provider:
+          keycloak:
+            authorizationUri: http://localhost:8083/auth/realms/master/protocol/openid-connect/auth?prompt=select_account
+            userInfoUri: http://localhost:8083/auth/realms/master/protocol/openid-connect/userinfo
+            tokenUri: http://localhost:8083/auth/realms/master/protocol/openid-connect/token
+            jwkSetUri: http://localhost:8083/auth/realms/master/protocol/openid-connect/certs
+            userNameAttribute: sub
+          ga4gh:
+            issuer-uri: http://localhost:9000
+            userInfoUri: http://localhost:9000/userinfo
