@@ -24,8 +24,8 @@ spring:
         registration:
           google:
             clientName: ego-google
-            clientId: #Fill this
-            clientSecret: # Fill this
+            clientId: ego
+            clientSecret: stuff
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: post
             scope:

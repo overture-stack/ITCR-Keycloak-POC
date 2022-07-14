@@ -47,7 +47,8 @@ public class DefaultSecurityConfig {
             .mvcMatchers("/assets/**", "/webjars/**", "/login").permitAll()
             .anyRequest().authenticated()
         .and()
-        .formLogin(Customizer.withDefaults());
+        .formLogin(Customizer.withDefaults())
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 //        .apply(federatedIdentityConfigurer);
     return http.build();
   }

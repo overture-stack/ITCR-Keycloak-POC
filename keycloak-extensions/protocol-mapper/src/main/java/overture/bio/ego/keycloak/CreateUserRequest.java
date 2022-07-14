@@ -8,4 +8,6 @@ public class CreateUserRequest {
   @NotNull public String lastName;
   @NotNull public String providerType;
   @NotNull public String providerSubjectId;
+  @NotNull public String providerAccessToken;
+  @NotNull public boolean includeGa4ghPermissions;
 }

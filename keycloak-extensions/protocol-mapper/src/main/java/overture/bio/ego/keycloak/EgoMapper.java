@@ -2,7 +2,10 @@ package overture.bio.ego.keycloak;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.apache.http.entity.ContentType;
+import org.keycloak.broker.provider.IdentityProvider;
+import org.keycloak.events.Details;
 import org.keycloak.models.ClientSessionContext;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.ProtocolMapperModel;
@@ -16,8 +19,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /*
  * Our own example protocol mapper.
@@ -76,6 +78,7 @@ public class EgoMapper extends AbstractOIDCProtocolMapper implements OIDCAccessT
   }
 
   // although it takes IDToken class, this method is used by all tokens as well access & refresh
+  @SneakyThrows
   protected void setClaim(IDToken token,
                           ProtocolMapperModel mappingModel,
                           UserSessionModel userSession,
@@ -90,6 +93,23 @@ public class EgoMapper extends AbstractOIDCProtocolMapper implements OIDCAccessT
     request.email = userSession.getUser().getEmail();
     request.firstName = userSession.getUser().getFirstName();
     request.lastName = userSession.getUser().getLastName();
+
+
+
+    String brokerId = userSession.getNote(Details.IDENTITY_PROVIDER);
+    brokerId = brokerId == null ? userSession.getNote(IdentityProvider.EXTERNAL_IDENTITY_PROVIDER) : brokerId;
+
+    // get the federated access token
+    // TODO: check ga4gh scope instead of broker if possible
+    if (brokerId.equalsIgnoreCase("mock-g4gh-broker")) {
+      // this was known by reading code here:
+      // https://github.com/keycloak/keycloak/blob/7eb964657c38c2241e32f734543f41635e279876/services/src/main/java/org/keycloak/protocol/oidc/DefaultTokenExchangeProvider.java#L457-L458
+      request.providerAccessToken = userSession.getNote(IdentityProvider.FEDERATED_ACCESS_TOKEN);
+      request.includeGa4ghPermissions = true;
+    }
+
+    System.out.println("session notes: " + userSession.getNotes());
+
     HttpClient client = HttpClient.newHttpClient();
     String rootUrl = mappingModel.getConfig().get("EGO_URL");
     HttpRequest httpReq = null;

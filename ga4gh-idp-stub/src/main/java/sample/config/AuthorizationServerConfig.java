@@ -166,8 +166,8 @@ public class AuthorizationServerConfig {
         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
         .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
         .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-        .redirectUri("http://localhost:8083/auth/realms/master/broker/ga4gh-broker/endpoint")
-        .redirectUri("http://keycloak:8083/auth/realms/master/broker/ga4gh-broker/endpoint")
+        .redirectUri("http://localhost:8083/auth/realms/master/broker/mock-g4gh-broker/endpoint")
+        .redirectUri("http://keycloak.ba:8083/auth/realms/master/broker/mock-g4gh-broker/endpoint")
         .scope(OidcScopes.OPENID)
         .scope("ga4gh_passport_v1")
         .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
@@ -206,7 +206,7 @@ public class AuthorizationServerConfig {
 
   @Bean
   public ProviderSettings providerSettings() {
-    return ProviderSettings.builder().issuer("http://localhost:9000").build();
+    return ProviderSettings.builder().issuer("http://172.17.0.1:9000").build();
   }
 
   @Bean
